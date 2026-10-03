@@ -1,918 +1,1346 @@
-document.addEventListener("DOMContentLoaded", function () {
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
 
-    /* =========================
-       START BUTTON
-    ========================= */
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    const startButton = document.getElementById("startButton");
+    <meta name="description" content="Fix It With Me - منصة مساعدة للعناية بالأطراف الصناعية">
 
-    if (startButton) {
-        startButton.addEventListener("click", function () {
+    <title>Fix It With Me | حلّها معك</title>
 
-            const typesSection = document.getElementById("types");
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-            if (typesSection) {
-                typesSection.scrollIntoView({
-                    behavior: "smooth"
-                });
-            }
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
-        });
-    }
+    <link rel="stylesheet" href="style.css">
+</head>
 
+<body>
 
-    /* =========================
-       PROSTHETIC TYPE
-    ========================= */
+    <!-- =========================
+         APP
+    ========================== -->
 
-    const partButtons =
-        document.querySelectorAll(".select-part");
+    <div class="app">
 
-    const selectedPart =
-        document.getElementById("selectedPart");
+        <!-- =========================
+             TOP HEADER
+        ========================== -->
 
-    partButtons.forEach(function (button) {
+        <header class="top-header">
 
-        button.addEventListener("click", function () {
+            <div class="brand">
 
-            partButtons.forEach(function (item) {
-                item.classList.remove("selected");
-            });
+                <div class="brand-icon">
+                    <span>F</span>
+                </div>
 
-            button.classList.add("selected");
+                <div class="brand-text">
+                    <h1>Fix It With Me</h1>
+                    <p>حلّها معك</p>
+                </div>
 
-            const part =
-                button.getAttribute("data-part");
+            </div>
 
-            if (selectedPart) {
+            <button
+                class="notification-btn"
+                onclick="showToast('لا توجد إشعارات جديدة')"
+                aria-label="الإشعارات"
+            >
+                <span class="notification-dot"></span>
+                <span class="bell-icon">◌</span>
+            </button>
 
-                selectedPart.textContent =
-                    "تم اختيار: " + part;
+        </header>
 
-            }
 
-        });
+        <!-- =========================
+             MAIN CONTENT
+        ========================== -->
 
-    });
+        <main id="mainContent">
 
 
-    /* =========================
-       COMPANY
-    ========================= */
+            <!-- =========================
+                 HOME PAGE
+            ========================== -->
 
-    const companyButtons =
-        document.querySelectorAll(".select-company");
+            <section id="homePage" class="page active-page">
 
-    const selectedCompany =
-        document.getElementById("selectedCompany");
+                <div class="welcome-row">
 
-    companyButtons.forEach(function (button) {
+                    <div>
+                        <span class="small-label">مرحبًا بك في</span>
 
-        button.addEventListener("click", function () {
+                        <h2>
+                            Fix It With Me
+                        </h2>
 
-            companyButtons.forEach(function (item) {
-                item.classList.remove("selected");
-            });
+                        <p>
+                            مساعدك الذكي لفهم مشكلة طرفك الصناعي
+                            والوصول إلى الحل المناسب.
+                        </p>
+                    </div>
 
-            button.classList.add("selected");
+                </div>
 
-            const company =
-                button.getAttribute("data-company");
 
-            if (selectedCompany) {
+                <!-- HERO -->
 
-                selectedCompany.textContent =
-                    "تم اختيار الشركة: " + company;
+                <div class="hero-card">
 
-            }
+                    <div class="hero-content">
 
-        });
+                        <span class="hero-badge">
+                            منصة مساعدة متكاملة
+                        </span>
 
-    });
+                        <h2>
+                            واجهتك مشكلة في الطرف الصناعي؟
+                        </h2>
 
+                        <p>
+                            حدّد نوع الطرف والقطعة المتضررة،
+                            واستكشف المشكلة والحلول المتاحة.
+                        </p>
 
-    /* =========================
-       THREE.JS 3D MODEL
-    ========================= */
+                        <button
+                            class="primary-btn hero-btn"
+                            onclick="startDiagnosis()"
+                        >
+                            ابدأ التشخيص
+                            <span>←</span>
+                        </button>
 
-    const modelContainer =
-        document.getElementById("modelContainer");
+                    </div>
 
-    let scene;
-    let camera;
-    let renderer;
-    let model;
+                    <div class="hero-visual">
 
-    let rotation = 0;
+                        <div class="prosthetic-orbit orbit-one"></div>
+                        <div class="prosthetic-orbit orbit-two"></div>
 
+                        <div class="prosthetic-model">
 
-    if (
-        modelContainer &&
-        typeof THREE !== "undefined"
-    ) {
+                            <div class="model-thigh"></div>
+                            <div class="model-knee"></div>
+                            <div class="model-shin"></div>
+                            <div class="model-foot"></div>
 
-        /* SCENE */
+                        </div>
 
-        scene = new THREE.Scene();
+                    </div>
 
-        scene.background =
-            new THREE.Color(0xe8f5f7);
+                </div>
 
 
-        /* CAMERA */
+                <!-- QUICK ACTIONS -->
 
-        camera = new THREE.PerspectiveCamera(
-            45,
-            modelContainer.clientWidth /
-            modelContainer.clientHeight,
-            0.1,
-            1000
-        );
+                <div class="section-heading">
 
-        camera.position.set(
-            3.5,
-            2.5,
-            5
-        );
+                    <div>
+                        <span>ابدأ من هنا</span>
+                        <h3>الخدمات الرئيسية</h3>
+                    </div>
 
+                </div>
 
-        /* RENDERER */
 
-        renderer =
-            new THREE.WebGLRenderer({
-                antialias: true
-            });
+                <div class="quick-grid">
 
-        renderer.setPixelRatio(
-            Math.min(window.devicePixelRatio, 2)
-        );
+                    <button
+                        class="quick-card"
+                        onclick="startDiagnosis()"
+                    >
 
-        renderer.setSize(
-            modelContainer.clientWidth,
-            modelContainer.clientHeight
-        );
+                        <div class="quick-icon blue">
+                            +
+                        </div>
 
-        modelContainer.appendChild(
-            renderer.domElement
-        );
+                        <div>
+                            <strong>تشخيص المشكلة</strong>
+                            <p>حدد القطعة والمشكلة</p>
+                        </div>
 
+                        <span class="arrow">←</span>
 
-        /* LIGHT */
+                    </button>
 
-        const ambientLight =
-            new THREE.AmbientLight(
-                0xffffff,
-                1.8
-            );
 
-        scene.add(ambientLight);
+                    <button
+                        class="quick-card"
+                        onclick="showPage('specialistPage')"
+                    >
 
+                        <div class="quick-icon purple">
+                            ?
+                        </div>
 
-        const mainLight =
-            new THREE.DirectionalLight(
-                0xffffff,
-                2
-            );
+                        <div>
+                            <strong>تحدث مع مختص</strong>
+                            <p>احصل على مساعدة مباشرة</p>
+                        </div>
 
-        mainLight.position.set(
-            4,
-            6,
-            5
-        );
+                        <span class="arrow">←</span>
 
-        scene.add(mainLight);
+                    </button>
 
+                </div>
 
-        const secondLight =
-            new THREE.DirectionalLight(
-                0x8ed1df,
-                1.2
-            );
 
-        secondLight.position.set(
-            -4,
-            2,
-            -3
-        );
+                <!-- PROSTHESIS TYPES -->
 
-        scene.add(secondLight);
+                <div class="section-heading">
 
+                    <div>
+                        <span>ابدأ باختيار النوع</span>
+                        <h3>نوع الطرف الصناعي</h3>
+                    </div>
 
-        /* MODEL GROUP */
+                </div>
 
-        model = new THREE.Group();
 
-        scene.add(model);
+                <div class="prosthesis-grid">
 
 
-        /* MATERIALS */
+                    <button
+                        class="prosthesis-card"
+                        onclick="selectProsthesis('upper')"
+                    >
 
-        const blueMaterial =
-            new THREE.MeshStandardMaterial({
-                color: 0x176b87,
-                metalness: 0.25,
-                roughness: 0.35
-            });
+                        <div class="prosthesis-image upper-image">
 
+                            <div class="arm-shape">
+                                <div class="upper-arm"></div>
+                                <div class="elbow"></div>
+                                <div class="forearm"></div>
+                                <div class="hand"></div>
+                            </div>
 
-        const lightBlueMaterial =
-            new THREE.MeshStandardMaterial({
-                color: 0x55a1b0,
-                metalness: 0.2,
-                roughness: 0.4
-            });
+                        </div>
 
+                        <div class="prosthesis-info">
 
-        const metalMaterial =
-            new THREE.MeshStandardMaterial({
-                color: 0x9aaeb4,
-                metalness: 0.75,
-                roughness: 0.25
-            });
+                            <div>
+                                <h4>طرف علوي</h4>
+                                <p>الذراع واليد</p>
+                            </div>
 
+                            <span class="round-arrow">←</span>
 
-        const darkMaterial =
-            new THREE.MeshStandardMaterial({
-                color: 0x405b64,
-                metalness: 0.8,
-                roughness: 0.2
-            });
+                        </div>
 
+                    </button>
 
-        /* SOCKET */
 
-        const socketGeometry =
-            new THREE.CylinderGeometry(
-                0.65,
-                0.48,
-                1.35,
-                32
-            );
+                    <button
+                        class="prosthesis-card"
+                        onclick="selectProsthesis('lower')"
+                    >
 
-        const socket =
-            new THREE.Mesh(
-                socketGeometry,
-                blueMaterial
-            );
+                        <div class="prosthesis-image lower-image">
 
-        socket.position.y = 1.7;
+                            <div class="leg-shape">
+                                <div class="leg-upper"></div>
+                                <div class="leg-knee"></div>
+                                <div class="leg-lower"></div>
+                                <div class="leg-foot"></div>
+                            </div>
 
-        model.add(socket);
+                        </div>
 
+                        <div class="prosthesis-info">
 
-        /* INNER SOCKET */
+                            <div>
+                                <h4>طرف سفلي</h4>
+                                <p>الساق والقدم</p>
+                            </div>
 
-        const innerGeometry =
-            new THREE.CylinderGeometry(
-                0.48,
-                0.36,
-                0.95,
-                32
-            );
+                            <span class="round-arrow">←</span>
 
-        const innerSocket =
-            new THREE.Mesh(
-                innerGeometry,
-                lightBlueMaterial
-            );
+                        </div>
 
-        innerSocket.position.y = 1.7;
+                    </button>
 
-        model.add(innerSocket);
+                </div>
 
 
-        /* JOINT */
+                <!-- FEATURES -->
 
-        const jointGeometry =
-            new THREE.SphereGeometry(
-                0.38,
-                32,
-                32
-            );
+                <div class="section-heading">
 
-        const joint =
-            new THREE.Mesh(
-                jointGeometry,
-                darkMaterial
-            );
+                    <div>
+                        <span>لماذا Fix It With Me؟</span>
+                        <h3>كل ما تحتاجه في مكان واحد</h3>
+                    </div>
 
-        joint.position.y = 0.8;
+                </div>
 
-        model.add(joint);
 
+                <div class="features-grid">
 
-        /* JOINT RING */
+                    <div class="feature-card">
 
-        const ringGeometry =
-            new THREE.TorusGeometry(
-                0.38,
-                0.08,
-                16,
-                32
-            );
+                        <div class="feature-number">01</div>
 
-        const ring =
-            new THREE.Mesh(
-                ringGeometry,
-                metalMaterial
-            );
+                        <h4>تشخيص منظم</h4>
 
-        ring.rotation.x =
-            Math.PI / 2;
+                        <p>
+                            انتقل خطوة بخطوة لتحديد المشكلة
+                            والقطعة المرتبطة بها.
+                        </p>
 
-        ring.position.y = 0.8;
+                    </div>
 
-        model.add(ring);
 
+                    <div class="feature-card">
 
-        /* SHAFT */
+                        <div class="feature-number">02</div>
 
-        const shaftGeometry =
-            new THREE.CylinderGeometry(
-                0.18,
-                0.23,
-                1.55,
-                24
-            );
+                        <h4>قطع بديلة</h4>
 
-        const shaft =
-            new THREE.Mesh(
-                shaftGeometry,
-                metalMaterial
-            );
+                        <p>
+                            استعرض القطع البديلة والمعلومات
+                            المرتبطة بها.
+                        </p>
 
-        shaft.position.y = -0.15;
+                    </div>
 
-        model.add(shaft);
 
+                    <div class="feature-card">
 
-        /* CONNECTOR */
+                        <div class="feature-number">03</div>
 
-        const connectorGeometry =
-            new THREE.CylinderGeometry(
-                0.27,
-                0.27,
-                0.25,
-                24
-            );
+                        <h4>مساعدة مختص</h4>
 
-        const connector =
-            new THREE.Mesh(
-                connectorGeometry,
-                darkMaterial
-            );
+                        <p>
+                            تواصل مع المختص عند الحاجة إلى
+                            مساعدة إضافية.
+                        </p>
 
-        connector.position.y = -0.95;
+                    </div>
 
-        model.add(connector);
+                </div>
 
+            </section>
 
-        /* FOOT */
 
-        const footGeometry =
-            new THREE.BoxGeometry(
-                1.55,
-                0.35,
-                2.25
-            );
 
-        const foot =
-            new THREE.Mesh(
-                footGeometry,
-                blueMaterial
-            );
+            <!-- =========================
+                 PROSTHESIS PAGE
+            ========================== -->
 
-        foot.position.set(
-            0,
-            -1.25,
-            0.35
-        );
+            <section id="prosthesisPage" class="page">
 
-        model.add(foot);
+                <button class="back-btn" onclick="goHome()">
+                    ← العودة للرئيسية
+                </button>
 
+                <div class="page-title">
 
-        /* FOOT TOP */
+                    <span class="small-label">الخطوة الأولى</span>
 
-        const footTopGeometry =
-            new THREE.BoxGeometry(
-                1.25,
-                0.22,
-                1.55
-            );
+                    <h2>حدد طرفك الصناعي</h2>
 
-        const footTop =
-            new THREE.Mesh(
-                footTopGeometry,
-                lightBlueMaterial
-            );
+                    <p>
+                        اختر الشركة والطراز حتى نتمكن من
+                        تخصيص خطوات التشخيص.
+                    </p>
 
-        footTop.position.set(
-            0,
-            -1.05,
-            0.25
-        );
+                </div>
 
-        model.add(footTop);
 
+                <div class="selection-summary">
 
-        /* SCREWS */
+                    <div class="summary-icon">
+                        P
+                    </div>
 
-        for (let i = 0; i < 4; i++) {
+                    <div>
+                        <span>النوع المحدد</span>
+                        <strong id="selectedTypeText">
+                            لم يتم الاختيار
+                        </strong>
+                    </div>
 
-            const screwGeometry =
-                new THREE.CylinderGeometry(
-                    0.045,
-                    0.045,
-                    0.18,
-                    16
-                );
+                </div>
 
-            const screw =
-                new THREE.Mesh(
-                    screwGeometry,
-                    darkMaterial
-                );
 
-            const angle =
-                (Math.PI * 2 / 4) * i;
+                <div class="form-card">
 
-            screw.position.x =
-                Math.cos(angle) * 0.35;
+                    <label for="companySelect">
+                        الشركة المصنعة
+                    </label>
 
-            screw.position.z =
-                Math.sin(angle) * 0.35;
+                    <select id="companySelect">
 
-            screw.position.y = 1.12;
+                        <option value="">
+                            اختر الشركة
+                        </option>
 
-            model.add(screw);
-        }
+                        <option value="Ottobock">
+                            Ottobock
+                        </option>
 
+                        <option value="Össur">
+                            Össur
+                        </option>
 
-        /* MODEL POSITION */
+                        <option value="Fillauer">
+                            Fillauer
+                        </option>
 
-        model.position.y = 0.2;
+                        <option value="Blatchford">
+                            Blatchford
+                        </option>
 
+                        <option value="Other">
+                            شركة أخرى
+                        </option>
 
-        /* =========================
-           ROTATION BUTTONS
-        ========================= */
+                    </select>
 
-        const leftButton =
-            document.getElementById("leftButton");
 
-        const rightButton =
-            document.getElementById("rightButton");
+                    <label for="modelSelect">
+                        الطراز
+                    </label>
 
-        const resetButton =
-            document.getElementById("resetButton");
+                    <select id="modelSelect">
 
+                        <option value="">
+                            اختر الطراز
+                        </option>
 
-        if (leftButton) {
+                        <option value="Model A">
+                            Model A
+                        </option>
 
-            leftButton.addEventListener(
-                "click",
-                function () {
+                        <option value="Model B">
+                            Model B
+                        </option>
 
-                    rotation -= 0.5;
+                        <option value="Model C">
+                            Model C
+                        </option>
 
-                    model.rotation.y =
-                        rotation;
+                    </select>
 
-                }
-            );
 
-        }
+                    <button
+                        class="primary-btn full-btn"
+                        onclick="continueToDiagnosis()"
+                    >
+                        متابعة التشخيص
+                        <span>←</span>
+                    </button>
 
+                </div>
 
-        if (rightButton) {
 
-            rightButton.addEventListener(
-                "click",
-                function () {
+                <div class="model-preview-card">
 
-                    rotation += 0.5;
+                    <div class="model-preview-header">
 
-                    model.rotation.y =
-                        rotation;
+                        <div>
+                            <span>معاينة</span>
+                            <h3>تصميم الطرف</h3>
+                        </div>
 
-                }
-            );
+                        <button
+                            class="small-outline-btn"
+                            onclick="showToast('المعاينة ثلاثية الأبعاد ستكون متاحة في النسخة القادمة')"
+                        >
+                            عرض 3D
+                        </button>
 
-        }
+                    </div>
 
 
-        if (resetButton) {
+                    <div class="large-prosthesis">
 
-            resetButton.addEventListener(
-                "click",
-                function () {
+                        <div class="large-leg">
 
-                    rotation = 0;
+                            <div class="large-upper"></div>
 
-                    model.rotation.set(
-                        0,
-                        0,
-                        0
-                    );
+                            <div class="large-knee"></div>
 
-                }
-            );
+                            <div class="large-lower"></div>
 
-        }
+                            <div class="large-foot"></div>
 
+                        </div>
 
-        /* =========================
-           MOUSE ROTATION
-        ========================= */
+                    </div>
 
-        let dragging = false;
-        let previousX = 0;
+                </div>
 
+            </section>
 
-        modelContainer.addEventListener(
-            "mousedown",
-            function (event) {
 
-                dragging = true;
 
-                previousX =
-                    event.clientX;
+            <!-- =========================
+                 DIAGNOSIS PAGE
+            ========================== -->
 
-            }
-        );
+            <section id="diagnosisPage" class="page">
 
+                <button
+                    class="back-btn"
+                    onclick="showPage('prosthesisPage')"
+                >
+                    ← العودة
+                </button>
 
-        window.addEventListener(
-            "mouseup",
-            function () {
+                <div class="page-title">
 
-                dragging = false;
+                    <span class="small-label">التشخيص</span>
 
-            }
-        );
+                    <h2>ما القطعة التي تواجه مشكلة؟</h2>
 
+                    <p>
+                        اختر القطعة المتضررة للانتقال إلى
+                        الخطوة التالية.
+                    </p>
 
-        modelContainer.addEventListener(
-            "mousemove",
-            function (event) {
+                </div>
 
-                if (!dragging) {
-                    return;
-                }
 
-                const difference =
-                    event.clientX - previousX;
+                <div class="diagnosis-list">
 
-                rotation +=
-                    difference * 0.01;
 
-                model.rotation.y =
-                    rotation;
+                    <button
+                        class="part-card"
+                        onclick="selectPart('نظام التعليق', 'Suspension System')"
+                    >
 
-                previousX =
-                    event.clientX;
+                        <div class="part-icon">
+                            SS
+                        </div>
 
-            }
-        );
+                        <div class="part-info">
 
+                            <h3>نظام التعليق</h3>
 
-        /* =========================
-           TOUCH ROTATION
-        ========================= */
+                            <p>
+                                Suspension System
+                            </p>
 
-        let previousTouchX = 0;
+                            <small>
+                                تثبيت الطرف الصناعي
+                            </small>
 
+                        </div>
 
-        modelContainer.addEventListener(
-            "touchstart",
-            function (event) {
+                        <span class="part-arrow">←</span>
 
-                if (event.touches.length > 0) {
+                    </button>
 
-                    previousTouchX =
-                        event.touches[0].clientX;
 
-                }
+                    <button
+                        class="part-card"
+                        onclick="selectPart('المفصل', 'Joint')"
+                    >
 
-            },
-            {
-                passive: true
-            }
-        );
+                        <div class="part-icon">
+                            JO
+                        </div>
 
+                        <div class="part-info">
 
-        modelContainer.addEventListener(
-            "touchmove",
-            function (event) {
+                            <h3>المفصل</h3>
 
-                if (event.touches.length > 0) {
+                            <p>
+                                Joint
+                            </p>
 
-                    const currentX =
-                        event.touches[0].clientX;
+                            <small>
+                                الحركة والاتصال بين الأجزاء
+                            </small>
 
-                    const difference =
-                        currentX - previousTouchX;
+                        </div>
 
-                    rotation +=
-                        difference * 0.01;
+                        <span class="part-arrow">←</span>
 
-                    model.rotation.y =
-                        rotation;
+                    </button>
 
-                    previousTouchX =
-                        currentX;
 
-                }
+                    <button
+                        class="part-card"
+                        onclick="selectPart('الأصابع', 'Fingers')"
+                    >
 
-            },
-            {
-                passive: true
-            }
-        );
+                        <div class="part-icon">
+                            FI
+                        </div>
 
+                        <div class="part-info">
 
-        /* =========================
-           RESIZE
-        ========================= */
+                            <h3>الأصابع</h3>
 
-        window.addEventListener(
-            "resize",
-            function () {
+                            <p>
+                                Fingers
+                            </p>
 
-                if (!camera || !renderer) {
-                    return;
-                }
+                            <small>
+                                حركة اليد والإمساك
+                            </small>
 
-                const width =
-                    modelContainer.clientWidth;
+                        </div>
 
-                const height =
-                    modelContainer.clientHeight;
+                        <span class="part-arrow">←</span>
 
-                camera.aspect =
-                    width / height;
+                    </button>
 
-                camera.updateProjectionMatrix();
 
-                renderer.setSize(
-                    width,
-                    height
-                );
+                    <button
+                        class="part-card"
+                        onclick="selectPart('المسامير', 'Screws')"
+                    >
 
-            }
-        );
+                        <div class="part-icon">
+                            SC
+                        </div>
 
+                        <div class="part-info">
 
-        /* =========================
-           ANIMATION
-        ========================= */
+                            <h3>المسامير</h3>
 
-        function animate() {
+                            <p>
+                                Screws
+                            </p>
 
-            requestAnimationFrame(
-                animate
-            );
+                            <small>
+                                تثبيت مكونات الطرف
+                            </small>
 
-            renderer.render(
-                scene,
-                camera
-            );
+                        </div>
 
-        }
+                        <span class="part-arrow">←</span>
 
-        animate();
+                    </button>
 
-    }
 
+                    <button
+                        class="part-card"
+                        onclick="selectPart('القدم الصناعية', 'Prosthetic Foot')"
+                    >
 
-    /* =========================
-       REPAIR INFORMATION
-    ========================= */
+                        <div class="part-icon">
+                            FT
+                        </div>
 
-    const repairButtons =
-        document.querySelectorAll(
-            ".repair-button"
-        );
+                        <div class="part-info">
 
-    const repairInfo =
-        document.getElementById(
-            "repairInfo"
-        );
+                            <h3>القدم الصناعية</h3>
 
+                            <p>
+                                Prosthetic Foot
+                            </p>
 
-    const repairData = {
+                            <small>
+                                الحركة والدعم أثناء المشي
+                            </small>
 
-        "المفصل":
-            "<strong>المفصل:</strong> قد تظهر مشكلات مثل صعوبة الحركة أو عدم ثبات المفصل. يختلف التعامل مع المشكلة حسب نوع المفصل وتصميم الطرف.",
+                        </div>
 
-        "المسامير":
-            "<strong>المسامير والوصلات:</strong> قد تحتاج الوصلات إلى الفحص عند حدوث ارتخاء أو تغير في ثبات المكونات. يجب استخدام القطع المناسبة للطراز.",
+                        <span class="part-arrow">←</span>
 
-        "الأصابع":
-            "<strong>الأصابع:</strong> في بعض الأطراف الصناعية العلوية قد تحدث مشكلات في حركة الأصابع أو آلية التحكم بها.",
+                    </button>
 
-        "نظام التعليق":
-            "<strong>نظام التعليق:</strong> يساعد على تثبيت الطرف الصناعي. قد يحتاج إلى فحص عند الشعور بعدم الثبات أو تغير ملاءمة الطرف."
+                </div>
 
-    };
+            </section>
 
 
-    repairButtons.forEach(function (button) {
 
-        button.addEventListener(
-            "click",
-            function () {
+            <!-- =========================
+                 PART PROBLEM PAGE
+            ========================== -->
 
-                const repairPart =
-                    button.getAttribute(
-                        "data-repair"
-                    );
+            <section id="partPage" class="page">
 
-                if (
-                    repairInfo &&
-                    repairData[repairPart]
-                ) {
+                <button
+                    class="back-btn"
+                    onclick="showPage('diagnosisPage')"
+                >
+                    ← العودة للقطع
+                </button>
 
-                    repairInfo.innerHTML =
-                        repairData[repairPart];
 
-                }
+                <div class="page-title">
 
-            }
-        );
+                    <span class="small-label">
+                        القطعة المحددة
+                    </span>
 
-    });
+                    <h2 id="partTitle">
+                        القطعة
+                    </h2>
 
+                    <p id="partEnglish">
+                        Part
+                    </p>
 
-    /* =========================
-       PART DETAILS
-    ========================= */
+                </div>
 
-    const detailsButtons =
-        document.querySelectorAll(
-            ".details-button"
-        );
 
+                <div class="problem-question">
 
-    const detailsData = {
+                    <h3>
+                        ما المشكلة التي تلاحظها؟
+                    </h3>
 
-        "نظام التعليق":
-            "نظام التعليق يساعد على تثبيت الطرف الصناعي والمحافظة على اتصاله بشكل مناسب. تختلف آليته حسب نوع الطرف.",
+                    <p>
+                        اختر الوصف الأقرب للمشكلة.
+                    </p>
 
-        "المفصل":
-            "المفصل يسمح بالحركة بين أجزاء الطرف الصناعي، ويختلف تصميمه حسب نوع الطرف ووظيفته.",
+                </div>
 
-        "الأصابع":
-            "الأصابع من المكونات الموجودة في بعض الأطراف الصناعية العلوية، وقد تكون ثابتة أو متحركة حسب التصميم.",
 
-        "المسامير":
-            "المسامير والوصلات تستخدم لربط مكونات الطرف الصناعي وتثبيتها."
-    };
+                <div class="problem-options">
 
+                    <button
+                        class="problem-option"
+                        onclick="selectProblem('تلف أو كسر')"
+                    >
 
-    detailsButtons.forEach(function (button) {
+                        <span class="problem-symbol">
+                            !
+                        </span>
 
-        button.addEventListener(
-            "click",
-            function () {
+                        <div>
+                            <strong>تلف أو كسر</strong>
+                            <small>القطعة تعرضت لتلف واضح</small>
+                        </div>
 
-                const part =
-                    button.getAttribute(
-                        "data-details"
-                    );
+                        <span>←</span>
 
-                if (detailsData[part]) {
+                    </button>
 
-                    alert(
-                        detailsData[part]
-                    );
 
-                }
+                    <button
+                        class="problem-option"
+                        onclick="selectProblem('عدم الثبات')"
+                    >
 
-            }
-        );
+                        <span class="problem-symbol">
+                            =
+                        </span>
 
-    });
+                        <div>
+                            <strong>عدم الثبات</strong>
+                            <small>القطعة لا تثبت بالشكل المعتاد</small>
+                        </div>
 
+                        <span>←</span>
 
-    /* =========================
-       SPECIALIST FORM
-    ========================= */
+                    </button>
 
-    const specialistForm =
-        document.getElementById(
-            "specialistForm"
-        );
 
-    const formMessage =
-        document.getElementById(
-            "formMessage"
-        );
+                    <button
+                        class="problem-option"
+                        onclick="selectProblem('صوت غير طبيعي')"
+                    >
 
+                        <span class="problem-symbol">
+                            ~
+                        </span>
 
-    if (specialistForm) {
+                        <div>
+                            <strong>صوت غير طبيعي</strong>
+                            <small>وجود صوت أثناء الحركة</small>
+                        </div>
 
-        specialistForm.addEventListener(
-            "submit",
-            function (event) {
+                        <span>←</span>
 
-                event.preventDefault();
+                    </button>
 
 
-                const limb =
-                    document.getElementById(
-                        "limb"
-                    ).value;
+                    <button
+                        class="problem-option"
+                        onclick="selectProblem('مشكلة أخرى')"
+                    >
 
-                const problem =
-                    document.getElementById(
-                        "problem"
-                    ).value;
+                        <span class="problem-symbol">
+                            ?
+                        </span>
 
-                const description =
-                    document.getElementById(
-                        "description"
-                    ).value;
+                        <div>
+                            <strong>مشكلة أخرى</strong>
+                            <small>المشكلة غير موجودة في الخيارات</small>
+                        </div>
 
+                        <span>←</span>
 
-                if (
-                    !limb ||
-                    !problem ||
-                    !description
-                ) {
+                    </button>
 
-                    if (formMessage) {
+                </div>
 
-                        formMessage.textContent =
-                            "يرجى تعبئة البيانات المطلوبة.";
+            </section>
 
-                    }
 
-                    return;
 
-                }
+            <!-- =========================
+                 REPLACEMENT PAGE
+            ========================== -->
 
+            <section id="replacementPage" class="page">
 
-                if (formMessage) {
+                <button
+                    class="back-btn"
+                    onclick="showPage('partPage')"
+                >
+                    ← العودة
+                </button>
 
-                    formMessage.textContent =
-                        "تم تسجيل طلبك بشكل تجريبي.";
 
-                }
+                <div class="page-title">
 
+                    <span class="small-label">
+                        النتيجة الأولية
+                    </span>
 
-                specialistForm.reset();
+                    <h2>الحل والقطع المتاحة</h2>
 
-            }
-        );
+                    <p>
+                        بناءً على المعلومات التي أدخلتها،
+                        يمكنك استعراض الخيارات التالية.
+                    </p>
 
-    }
+                </div>
 
 
-    /* =========================
-       NAVIGATION
-    ========================= */
+                <div class="diagnosis-result">
 
-    const navigationLinks =
-        document.querySelectorAll(
-            ".nav-links a"
-        );
+                    <div class="result-check">
+                        ✓
+                    </div>
 
+                    <div>
 
-    navigationLinks.forEach(function (link) {
+                        <span>القطعة</span>
 
-        link.addEventListener(
-            "click",
-            function (event) {
+                        <strong id="resultPart">
+                            -
+                        </strong>
 
-                const targetId =
-                    link.getAttribute("href");
+                        <small id="resultProblem">
+                            -
+                        </small>
 
-                if (
-                    targetId &&
-                    targetId.startsWith("#")
-                ) {
+                    </div>
 
-                    const target =
-                        document.querySelector(
-                            targetId
-                        );
+                </div>
 
-                    if (target) {
 
-                        event.preventDefault();
+                <div class="section-heading simple">
 
-                        target.scrollIntoView({
-                            behavior: "smooth"
-                        });
+                    <div>
+                        <span>قطع بديلة</span>
+                        <h3>الخيارات المتاحة</h3>
+                    </div>
 
-                    }
+                </div>
 
-                }
 
-            }
-        );
+                <div class="product-list">
 
-    });
 
-});
+                    <article class="product-card">
+
+                        <div class="product-image">
+                            <div class="product-shape shape-one"></div>
+                        </div>
+
+                        <div class="product-details">
+
+                            <span class="product-tag">
+                                متوافق
+                            </span>
+
+                            <h3>
+                                قطعة بديلة أساسية
+                            </h3>
+
+                            <p>
+                                خيار مناسب للاستبدال
+                                حسب توافق الطرف.
+                            </p>
+
+                            <div class="product-bottom">
+
+                                <strong>
+                                    350 ر.س
+                                </strong>
+
+                                <button
+                                    onclick="addToCart('قطعة بديلة أساسية', 350)"
+                                >
+                                    إضافة
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="product-card">
+
+                        <div class="product-image second">
+                            <div class="product-shape shape-two"></div>
+                        </div>
+
+                        <div class="product-details">
+
+                            <span class="product-tag">
+                                خيار متقدم
+                            </span>
+
+                            <h3>
+                                قطعة بديلة محسّنة
+                            </h3>
+
+                            <p>
+                                تصميم أكثر تطورًا
+                                للاستخدام اليومي.
+                            </p>
+
+                            <div class="product-bottom">
+
+                                <strong>
+                                    620 ر.س
+                                </strong>
+
+                                <button
+                                    onclick="addToCart('قطعة بديلة محسّنة', 620)"
+                                >
+                                    إضافة
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <article class="product-card">
+
+                        <div class="product-image third">
+                            <div class="product-shape shape-three"></div>
+                        </div>
+
+                        <div class="product-details">
+
+                            <span class="product-tag">
+                                احترافي
+                            </span>
+
+                            <h3>
+                                قطعة عالية الأداء
+                            </h3>
+
+                            <p>
+                                خيار متقدم للاستخدام
+                                المتكرر.
+                            </p>
+
+                            <div class="product-bottom">
+
+                                <strong>
+                                    890 ر.س
+                                </strong>
+
+                                <button
+                                    onclick="addToCart('قطعة عالية الأداء', 890)"
+                                >
+                                    إضافة
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <button
+                    class="secondary-wide-btn"
+                    onclick="showPage('specialistPage')"
+                >
+                    تحتاج مساعدة من مختص؟
+                    <span>←</span>
+                </button>
+
+            </section>
+
+
+
+            <!-- =========================
+                 CART PAGE
+            ========================== -->
+
+            <section id="cartPage" class="page">
+
+                <div class="page-title">
+
+                    <span class="small-label">المشتريات</span>
+
+                    <h2>سلة القطع</h2>
+
+                    <p>
+                        راجع القطع التي اخترتها قبل المتابعة.
+                    </p>
+
+                </div>
+
+
+                <div id="cartItems" class="cart-items">
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            0
+                        </div>
+
+                        <h3>
+                            السلة فارغة
+                        </h3>
+
+                        <p>
+                            لم تتم إضافة أي قطع حتى الآن.
+                        </p>
+
+                        <button
+                            class="primary-btn"
+                            onclick="startDiagnosis()"
+                        >
+                            ابدأ التشخيص
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="cartSummary"
+                    class="cart-summary hidden"
+                >
+
+                    <div class="summary-row">
+
+                        <span>المجموع</span>
+
+                        <strong id="cartTotal">
+                            0 ر.س
+                        </strong>
+
+                    </div>
+
+                    <button
+                        class="primary-btn full-btn"
+                        onclick="checkout()"
+                    >
+                        إتمام الطلب
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 ORDERS PAGE
+            ========================== -->
+
+            <section id="ordersPage" class="page">
+
+                <div class="page-title">
+
+                    <span class="small-label">المتابعة</span>
+
+                    <h2>طلباتي</h2>
+
+                    <p>
+                        تابع الطلبات التي قمت بإنشائها.
+                    </p>
+
+                </div>
+
+
+                <div id="ordersList">
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+                            —
+                        </div>
+
+                        <h3>
+                            لا توجد طلبات
+                        </h3>
+
+                        <p>
+                            ستظهر طلباتك هنا بعد إتمام عملية الشراء.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 SPECIALIST PAGE
+            ========================== -->
+
+            <section id="specialistPage" class="page">
+
+                <button
+                    class="back-btn"
+                    onclick="goHome()"
+                >
+                    ← العودة
+                </button>
+
+
+                <div class="page-title">
+
+                    <span class="small-label">
+                        المساعدة
+                    </span>
+
+                    <h2>تحدث مع مختص</h2>
+
+                    <p>
+                        أرسل استفسارك وسنساعدك في فهم المشكلة.
+                    </p>
+
+                </div>
+
+
+                <div class="specialist-card">
+
+                    <div class="specialist-profile">
+
+                        <div class="specialist-avatar">
+                            S
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                فريق الدعم
+                            </h3>
+
+                            <span class="online-status">
+                                متاح للمساعدة
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="chatMessages"
+                        class="chat-messages"
+                    >
+
+                        <div class="message specialist-message">
+                            أهلًا بك. كيف يمكننا مساعدتك؟
+                        </div>
+
+                    </div>
+
+
+                    <div class="chat-input-area">
+
+                        <input
+                            id="chatInput"
+                            type="text"
+                            placeholder="اكتب رسالتك هنا..."
+                            onkeydown="handleChatKey(event)"
+                        >
+
+                        <button
+                            onclick="sendMessage()"
+                        >
+                            إرسال
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 PROFILE PAGE
+            ========================== -->
+
+            <section id="profilePage" class="page">
+
+                <div class="page-title">
+
+                    <span class="small-label">
+                        حسابك
+                    </span>
+
+                    <h2>الملف الشخصي</h2>
+
+                    <p>
+                        إدارة معلومات حسابك وإعدادات التطبيق.
+                    </p>
+
+                </div>
+
+
+                <div class="profile-card">
+
+                    <div class="profile-avatar">
+                        U
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            المستخدم
+                        </h3>
+
+                        <p>
+                            حساب Fix It With Me
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-list">
+
+                    <button
+                        onclick="showToast('صفحة المعلومات الشخصية قيد التطوير')"
+                    >
+                        <span>المعلومات الشخصية</span>
+                        <span>←</span>
+                    </button>
+
+                    <button
+                        onclick="showToast('صفحة الإعدادات قيد التطوير')"
+                    >
+                        <span>الإعدادات</span>
+                        <span>←</span>
+                    </button>
+
+                    <button
+                        onclick="showToast('مركز المساعدة قيد التطوير')"
+                    >
+                        <span>مركز المساعدة</span>
+                        <span>←</span>
+                    </button>
+
+                    <button
+                        onclick="showToast('هذه نسخة تجريبية من المشروع')"
+                    >
+                        <span>عن Fix It With Me</span>
+                        <span>←</span>
+                    </button>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+
+        <!-- =========================
+             BOTTOM NAVIGATION
+        ========================== -->
+
+        <nav class="bottom-nav">
+
+            <button
+                class="nav-item active"
+                data-page="homePage"
+                onclick="navigate('homePage')"
+            >
+                <span class="nav-icon">⌂</span>
+                <span>الرئيسية</span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="diagnosisPage"
+                onclick="startDiagnosis()"
+            >
+                <span class="nav-icon">+</span>
+                <span>التشخيص</span>
+            </button>
+
+
+            <button
+                class="nav-item cart-nav"
+                data-page="cartPage"
+                onclick="navigate('cartPage')"
+            >
+                <span class="nav-icon">□</span>
+                <span class="cart-count" id="cartCount">0</span>
+                <span>السلة</span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="ordersPage"
+                onclick="navigate('ordersPage')"
+            >
+                <span class="nav-icon">≡</span>
+                <span>طلباتي</span>
+            </button>
+
+
+            <button
+                class="nav-item"
+                data-page="profilePage"
+                onclick="navigate('profilePage')"
+            >
+                <span class="nav-icon">○</span>
+                <span>حسابي</span>
+            </button>
+
+        </nav>
+
+    </div>
+
+
+
+    <!-- =========================
+         TOAST
+    ========================== -->
+
+    <div id="toast" class="toast">
+        <span id="toastText"></span>
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
